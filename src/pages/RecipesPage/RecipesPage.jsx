@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import RecipeCard from "./RecipeCard";  // Asegúrate de tener este componente
-import RecipeModal from "./RecipeModal"; // Modal para visualizar recetas
-import RecipeEditModal from "./RecipeEditModal"; // Modal para editar recetas
-import PageSelector from "./PageSelector"; // Nuevo componente para la navegación entre páginas
+import RecipeCard from "../../components/RecipeCard/RecipeCard.jsx";  // Asegúrate de tener este componente
+import RecipeModal from "../../components/RecipeModal/RecipeModal.jsx";  // Modal para visualizar recetas
+import RecipeEditModal from "../../components/RecipeEditModal/RecipeEditModal.jsx";  // Modal para editar recetas
+import PageSelector from "../../components/PageSelector/PageSelector.jsx"; // Nuevo componente para la navegación entre páginas
 
 const RecipesPage = () => {
     const [recipes, setRecipes] = useState([]);

@@ -9,8 +9,8 @@ const RecipeCard = ({ title, description, imageUrl, time, servings }) => {
                 <h2>{title}</h2>
                 <p>{description}</p>
                 <div className="recipe-info">
-                    <span>⏱️ {time} min</span>
-                    <span>👨‍🍳 {servings} personas</span>
+                    <span>{time} min</span>
+                    <span>{servings} personas</span>
                 </div>
             </div>
         </div>
