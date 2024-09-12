@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';  // Importa useNavigate para la redirección
-import getRecipes from "../../services/get/getRecipes";  
+import getRecipes from "../../services/fetch/getRecipes";  
 import deleteRecipe from "../../services/delete/deleteRecipe";  
 import updateRecipe from "../../services/patch/updateRecipe";  
 import createRecipe from "../../services/post/createRecipe";  
