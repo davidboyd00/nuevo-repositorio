@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from 'react-router-dom';  // Importa useNavigate para la redirección
 import getRecipes from "../../services/fetch/getRecipes";  
 import deleteRecipe from "../../services/delete/deleteRecipe";  
 import updateRecipe from "../../services/patch/updateRecipe";  
-import createRecipe from "../../services/post/createRecipe";  
 import RecipeCard from "../../components/RecipeCard/RecipeCard.jsx"; 
 import RecipeModal from "../../components/RecipeModal/RecipeModal.jsx";
 import RecipeEditModal from "../../components/RecipeModal/RecipeEditModal.jsx";
@@ -16,8 +14,6 @@ const RecipesPage = () => {
     const [selectedRecipe, setSelectedRecipe] = useState(null);
     const [isViewing, setIsViewing] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
-    
-    const navigate = useNavigate();  // Inicializa el hook para la redirección
 
     useEffect(() => {
         const fetchRecipes = async () => {
@@ -73,15 +69,24 @@ const RecipesPage = () => {
 
     // Función para redirigir a la página de creación de recetas
     const handleNavigateToCreateRecipe = () => {
-        navigate('/create-recipe');  // Redirige a la página de creación
+        window.location.href = '/create-recipe';  // Redirige a la página de creación
     };
 
     return (
         <div>
             <h1>Recipes Page</h1>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
-                {recipes.map(recipe => (
-                    <div key={recipe.id} onClick={() => handleViewRecipe(recipe)} style={{ border: '1px solid #ddd', padding: '10px', cursor: 'pointer' }}>
+            {/* Aquí ajustamos la grilla para mostrar 3 recetas por fila */}
+            <div style={{ 
+                display: 'grid', 
+                gridTemplateColumns: 'repeat(3, 1fr)', 
+                gap: '20px' 
+            }}>
+                {recipes.slice(0, 9).map(recipe => (  // Limitar la visualización a 9 recetas por página
+                    <div 
+                        key={recipe.id} 
+                        onClick={() => handleViewRecipe(recipe)} 
+                        style={{ border: '1px solid #ddd', padding: '10px', cursor: 'pointer' }}
+                    >
                         <RecipeCard 
                             title={recipe.title} 
                             description={recipe.description} 
@@ -104,6 +109,7 @@ const RecipesPage = () => {
                 onPageChange={handlePageChange} 
             />
 
+            {/* Modal para visualizar receta */}
             {isViewing && 
                 <RecipeModal 
                     recipe={selectedRecipe} 
@@ -113,6 +119,7 @@ const RecipesPage = () => {
                 />
             }
 
+            {/* Modal para editar receta */}
             {isEditing && 
                 <RecipeEditModal 
                     recipe={selectedRecipe} 
