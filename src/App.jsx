@@ -1,12 +1,18 @@
-import Navbar from './components/Navbar/Navbar.jsx';  // Asegúrate de ajustar la ruta correcta
-import Router from './Router';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import RecipesPage from './pages/RecipesPage/RecipesPage.jsx';
+import CreateRecipePage from './pages/CreateRecipePage/CreateRecipePage.jsx';
 
 function App() {
   return (
-    <>
-      <Navbar />  {/* Coloca la Navbar aquí */}
-      <Router />
-    </>
+    <Router>
+      <Routes>
+        {/* Página principal con todas las recetas */}
+        <Route path="/" element={<RecipesPage />} />
+        
+        {/* Página para crear una nueva receta */}
+        <Route path="/create-recipe" element={<CreateRecipePage />} />
+      </Routes>
+    </Router>
   );
 }
 

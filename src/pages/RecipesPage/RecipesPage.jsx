@@ -1,37 +1,30 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
-import RecipeCard from "../../components/RecipeCard/RecipeCard.jsx";  // Asegúrate de tener este componente
-import RecipeModal from "../../components/RecipeModal/RecipeModal.jsx";  // Modal para visualizar recetas
-import RecipeEditModal from "../../components/RecipeModal/RecipeEditModal.jsx"; // Modal para editar recetas
+import { useNavigate } from 'react-router-dom';  // Importa useNavigate para la redirección
+import getRecipes from "../../services/get/getRecipes";  
+import deleteRecipe from "../../services/delete/deleteRecipe";  
+import updateRecipe from "../../services/patch/updateRecipe";  
+import createRecipe from "../../services/post/createRecipe";  
+import RecipeCard from "../../components/RecipeCard/RecipeCard.jsx"; 
+import RecipeModal from "../../components/RecipeModal/RecipeModal.jsx";
+import RecipeEditModal from "../../components/RecipeModal/RecipeEditModal.jsx";
 import PageSelector from "../../components/PageSelector/PageSelector.jsx";
 
 const RecipesPage = () => {
     const [recipes, setRecipes] = useState([]);
     const [page, setPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1); // Añadido para manejar el total de páginas
+    const [totalPages, setTotalPages] = useState(1);
     const [selectedRecipe, setSelectedRecipe] = useState(null);
     const [isViewing, setIsViewing] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
+    
+    const navigate = useNavigate();  // Inicializa el hook para la redirección
 
-    const API_URL = 'https://t2-24-2-backend.onrender.com';
-
-    // Función para obtener todas las recetas
     useEffect(() => {
         const fetchRecipes = async () => {
             try {
-                const response = await axios.get(`${API_URL}/recipes`, {
-                    params: {
-                        page: page,
-                        page_size: 10
-                    },
-                    headers: {
-                        'Authorization': 'Bearer panconqueso' // Token de autorización
-                    }
-                });
-
-                console.log(response.data);  // Verificar el contenido de la respuesta
-                setRecipes(response.data.recipes); // Ajustar esto según la estructura de la API
-                setTotalPages(response.data.totalPages || 1); // Manejo de la paginación
+                const data = await getRecipes(page);  
+                setRecipes(data.recipes);
+                setTotalPages(data.totalPages || 1);
             } catch (error) {
                 console.error("Error al obtener las recetas:", error);
             }
@@ -40,75 +33,47 @@ const RecipesPage = () => {
         fetchRecipes();
     }, [page]);
 
-    // Función para mostrar el modal de visualización de receta
     const handleViewRecipe = (recipe) => {
         setSelectedRecipe(recipe);
         setIsViewing(true);
     };
 
-    // Función para iniciar el modo de edición de receta
     const handleEditRecipe = () => {
         setIsEditing(true);
-        setIsViewing(false); // Cierra el modal de visualización
+        setIsViewing(false);
     };
 
-    // Función para guardar los cambios de edición de receta (Update)
     const handleSaveRecipe = async (updatedRecipe) => {
         try {
-            const response = await axios.patch(`${API_URL}/recipes/${updatedRecipe.id}`, updatedRecipe, {
-                headers: {
-                    'Authorization': 'Bearer panconqueso',
-                    'Content-Type': 'application/json'
-                }
-            });
-
+            const updatedData = await updateRecipe(updatedRecipe.id, updatedRecipe);  
             setRecipes(prevRecipes =>
-                prevRecipes.map(r => r.id === updatedRecipe.id ? response.data : r)
+                prevRecipes.map(r => r.id === updatedRecipe.id ? updatedData : r)
             );
-            setIsEditing(false); // Cierra el modal de edición
+            setIsEditing(false);
             console.log("Receta actualizada con éxito");
         } catch (error) {
             console.error("Error al actualizar la receta:", error);
         }
     };
 
-    // Función para eliminar la receta (DELETE)
     const handleDeleteRecipe = async () => {
         try {
-            const response = await axios.delete(`${API_URL}/recipes/${selectedRecipe.id}`, {
-                headers: {
-                    'Authorization': 'Bearer panconqueso'
-                }
-            });
-
+            await deleteRecipe(selectedRecipe.id);  
             setRecipes(prevRecipes => prevRecipes.filter(recipe => recipe.id !== selectedRecipe.id));
-            setIsViewing(false); // Cierra el modal después de eliminar
+            setIsViewing(false);
             console.log("Receta eliminada con éxito");
         } catch (error) {
             console.error("Error al eliminar la receta:", error);
         }
     };
 
-    // Función para crear una nueva receta (POST)
-    const handleCreateRecipe = async (newRecipe) => {
-        try {
-            const response = await axios.post(`${API_URL}/recipes`, newRecipe, {
-                headers: {
-                    'Authorization': 'Bearer panconqueso',
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            setRecipes([...recipes, response.data]);  // Añadir la nueva receta a la lista
-            console.log("Receta creada con éxito");
-        } catch (error) {
-            console.error("Error al crear la receta:", error);
-        }
-    };
-
-    // Función para manejar el cambio de página
     const handlePageChange = (newPage) => {
         setPage(newPage);
+    };
+
+    // Función para redirigir a la página de creación de recetas
+    const handleNavigateToCreateRecipe = () => {
+        navigate('/create-recipe');  // Redirige a la página de creación
     };
 
     return (
@@ -128,14 +93,17 @@ const RecipesPage = () => {
                 ))}
             </div>
 
-            {/* PageSelector para cambiar de página */}
+            {/* Botón para crear nueva receta */}
+            <button onClick={handleNavigateToCreateRecipe} style={{ marginTop: '20px' }}>
+                Crear Nueva Receta
+            </button>
+
             <PageSelector 
                 currentPage={page} 
                 totalPages={totalPages} 
                 onPageChange={handlePageChange} 
             />
 
-            {/* Modal para visualizar receta */}
             {isViewing && 
                 <RecipeModal 
                     recipe={selectedRecipe} 
@@ -145,7 +113,6 @@ const RecipesPage = () => {
                 />
             }
 
-            {/* Modal para editar receta */}
             {isEditing && 
                 <RecipeEditModal 
                     recipe={selectedRecipe} 

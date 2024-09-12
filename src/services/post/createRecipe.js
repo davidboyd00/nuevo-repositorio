@@ -15,7 +15,7 @@ const createRecipe = async (newRecipe) => {
       const data = await response.json();
       return data;
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error al crear la receta:', error);
     }
   };
   
