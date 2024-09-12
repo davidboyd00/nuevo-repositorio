@@ -1,0 +1,41 @@
+/* CreateRecipePage.css */
+.recipe-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f0f0;
+    position: relative;
+  }
+  
+  .form-wrapper {
+    width: 50%;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 2; /* Para que el formulario esté siempre encima */
+  }
+  
+  .side-images {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    z-index: 1; /* Para que las imágenes estén por detrás del formulario */
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .side-images img {
+    width: 20%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  

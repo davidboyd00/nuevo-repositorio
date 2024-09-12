@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // Para redireccionar después de crear la receta
 import createRecipe from "../../services/post/createRecipe"; // Importa la función de crear receta
+import './CreateRecipePage.css'; // Importa los estilos correspondientes
 
 const CreateRecipePage = () => {
   const [title, setTitle] = useState("");
@@ -86,50 +87,52 @@ const CreateRecipePage = () => {
   }, [successMessage, errorMessage]);
 
   return (
-    <div>
-      <h1>Crear Nueva Receta</h1>
-      <form onSubmit={handleSubmit}>
-        {/* Campos del formulario */}
-        <div>
-          <label>Título:</label>
-          <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
-        </div>
-        <div>
-          <label>Descripción:</label>
-          <textarea value={description} onChange={(e) => setDescription(e.target.value)} required />
-        </div>
-        <div>
-          <label>Ingredientes (separados por comas):</label>
-          <input type="text" value={ingredients} onChange={(e) => setIngredients(e.target.value)} required />
-        </div>
-        <div>
-          <label>Pasos (uno por línea):</label>
-          <textarea value={steps} onChange={(e) => setSteps(e.target.value)} required />
-        </div>
-        <div>
-          <label>URL de la imagen:</label>
-          <input type="text" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} required />
-        </div>
-        <div>
-          <label>Categorías (separadas por comas):</label>
-          <input type="text" value={categories} onChange={(e) => setCategories(e.target.value)} required />
-        </div>
-        <div>
-          <label>Evaluación (1-5):</label>
-          <input type="number" value={evaluation} min="1" max="5" onChange={(e) => setEvaluation(e.target.value)} required />
-        </div>
-        <div>
-          <label>Tiempo de preparación (en minutos):</label>
-          <input type="number" value={preparationTime} onChange={(e) => setPreparationTime(e.target.value)} required />
-        </div>
-        <button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Creando..." : "Crear Receta"}
-        </button>
-      </form>
+    <div className="recipe-container">
+      <div className="form-wrapper">
+        <h1>Crear Nueva Receta</h1>
+        <form onSubmit={handleSubmit}>
+          {/* Campos del formulario */}
+          <div>
+            <label>Título:</label>
+            <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
+          </div>
+          <div>
+            <label>Descripción:</label>
+            <textarea value={description} onChange={(e) => setDescription(e.target.value)} required />
+          </div>
+          <div>
+            <label>Ingredientes (separados por comas):</label>
+            <input type="text" value={ingredients} onChange={(e) => setIngredients(e.target.value)} required />
+          </div>
+          <div>
+            <label>Pasos (uno por línea):</label>
+            <textarea value={steps} onChange={(e) => setSteps(e.target.value)} required />
+          </div>
+          <div>
+            <label>URL de la imagen:</label>
+            <input type="text" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} required />
+          </div>
+          <div>
+            <label>Categorías (separadas por comas):</label>
+            <input type="text" value={categories} onChange={(e) => setCategories(e.target.value)} required />
+          </div>
+          <div>
+            <label>Evaluación (1-5):</label>
+            <input type="number" value={evaluation} min="1" max="5" onChange={(e) => setEvaluation(e.target.value)} required />
+          </div>
+          <div>
+            <label>Tiempo de preparación (en minutos):</label>
+            <input type="number" value={preparationTime} onChange={(e) => setPreparationTime(e.target.value)} required />
+          </div>
+          <button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "Creando..." : "Crear Receta"}
+          </button>
+        </form>
 
-      {/* Mensajes de éxito o error */}
-      {successMessage && <div style={{ color: "green" }}>{successMessage}</div>}
-      {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
+        {/* Mensajes de éxito o error */}
+        {successMessage && <div style={{ color: "green" }}>{successMessage}</div>}
+        {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
+      </div>
     </div>
   );
 };
