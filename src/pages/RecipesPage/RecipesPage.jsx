@@ -76,27 +76,31 @@ const RecipesPage = () => {
         <div>
             <h1>Recipes Page</h1>
             {/* Aquí ajustamos la grilla para mostrar 3 recetas por fila */}
-            <div style={{ 
-                display: 'grid', 
-                gridTemplateColumns: 'repeat(3, 1fr)', 
-                gap: '20px' 
-            }}>
-                {recipes.slice(0, 9).map(recipe => (  // Limitar la visualización a 9 recetas por página
-                    <div 
-                        key={recipe.id} 
-                        onClick={() => handleViewRecipe(recipe)} 
-                        style={{ border: '1px solid #ddd', padding: '10px', cursor: 'pointer' }}
-                    >
-                        <RecipeCard 
-                            title={recipe.title} 
-                            description={recipe.description} 
-                            imageUrl={recipe.image} 
-                            time={recipe.preparation_time_in_minutes} 
-                            servings={recipe.servings} 
-                        />
-                    </div>
-                ))}
-            </div>
+            {recipes && recipes.length > 0 ? (
+                <div style={{ 
+                    display: 'grid', 
+                    gridTemplateColumns: 'repeat(3, 1fr)', 
+                    gap: '20px' 
+                }}>
+                    {recipes.slice(0, 9).map(recipe => (  // Limitar la visualización a 9 recetas por página
+                        <div 
+                            key={recipe.id} 
+                            onClick={() => handleViewRecipe(recipe)} 
+                            style={{ border: '1px solid #ddd', padding: '10px', cursor: 'pointer' }}
+                        >
+                            <RecipeCard 
+                                title={recipe.title} 
+                                description={recipe.description} 
+                                imageUrl={recipe.image} 
+                                time={recipe.preparation_time_in_minutes} 
+                                servings={recipe.servings} 
+                            />
+                        </div>
+                    ))}
+                </div>
+            ) : (
+                <p>Loading recipes...</p>  // Mensaje de carga mientras se obtienen los datos
+            )}
 
             {/* Botón para crear nueva receta */}
             <button onClick={handleNavigateToCreateRecipe} style={{ marginTop: '20px' }}>
