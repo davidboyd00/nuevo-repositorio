@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 import RecipeCard from "../../components/RecipeCard/RecipeCard.jsx";  // Asegúrate de tener este componente
 import RecipeModal from "../../components/RecipeModal/RecipeModal.jsx";  // Modal para visualizar recetas
 import RecipeEditModal from "../../components/RecipeModal/RecipeEditModal.jsx"; // Modal para editar recetas
@@ -18,20 +19,19 @@ const RecipesPage = () => {
     useEffect(() => {
         const fetchRecipes = async () => {
             try {
-                const response = await fetch(`${API_URL}/recipes/?page=${page}&page_size=10`, {
+                const response = await axios.get(`${API_URL}/recipes`, {
+                    params: {
+                        page: page,
+                        page_size: 10
+                    },
                     headers: {
                         'Authorization': 'Bearer panconqueso' // Token de autorización
                     }
                 });
 
-                if (!response.ok) {
-                    throw new Error("Error en la respuesta de la API");
-                }
-
-                const data = await response.json();
-                console.log(data);  // Verificar el contenido de la respuesta
-                setRecipes(data.recipes); // Ajustar esto según la estructura de la API
-                setTotalPages(data.totalPages || 1); // Manejo de la paginación
+                console.log(response.data);  // Verificar el contenido de la respuesta
+                setRecipes(response.data.recipes); // Ajustar esto según la estructura de la API
+                setTotalPages(response.data.totalPages || 1); // Manejo de la paginación
             } catch (error) {
                 console.error("Error al obtener las recetas:", error);
             }
@@ -55,22 +55,15 @@ const RecipesPage = () => {
     // Función para guardar los cambios de edición de receta (Update)
     const handleSaveRecipe = async (updatedRecipe) => {
         try {
-            const response = await fetch(`${API_URL}/recipes/${updatedRecipe.id}`, {
-                method: 'PATCH',
+            const response = await axios.patch(`${API_URL}/recipes/${updatedRecipe.id}`, updatedRecipe, {
                 headers: {
                     'Authorization': 'Bearer panconqueso',
                     'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(updatedRecipe)
+                }
             });
 
-            if (!response.ok) {
-                throw new Error("Error al actualizar la receta");
-            }
-
-            const data = await response.json();
             setRecipes(prevRecipes =>
-                prevRecipes.map(r => r.id === updatedRecipe.id ? data : r)
+                prevRecipes.map(r => r.id === updatedRecipe.id ? response.data : r)
             );
             setIsEditing(false); // Cierra el modal de edición
             console.log("Receta actualizada con éxito");
@@ -82,16 +75,11 @@ const RecipesPage = () => {
     // Función para eliminar la receta (DELETE)
     const handleDeleteRecipe = async () => {
         try {
-            const response = await fetch(`${API_URL}/recipes/${selectedRecipe.id}`, {
-                method: 'DELETE',
+            const response = await axios.delete(`${API_URL}/recipes/${selectedRecipe.id}`, {
                 headers: {
                     'Authorization': 'Bearer panconqueso'
                 }
             });
-
-            if (!response.ok) {
-                throw new Error("Error al eliminar la receta");
-            }
 
             setRecipes(prevRecipes => prevRecipes.filter(recipe => recipe.id !== selectedRecipe.id));
             setIsViewing(false); // Cierra el modal después de eliminar
@@ -104,21 +92,14 @@ const RecipesPage = () => {
     // Función para crear una nueva receta (POST)
     const handleCreateRecipe = async (newRecipe) => {
         try {
-            const response = await fetch(`${API_URL}/recipes`, {
-                method: 'POST',
+            const response = await axios.post(`${API_URL}/recipes`, newRecipe, {
                 headers: {
                     'Authorization': 'Bearer panconqueso',
                     'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(newRecipe)
+                }
             });
 
-            if (!response.ok) {
-                throw new Error("Error al crear la receta");
-            }
-
-            const data = await response.json();
-            setRecipes([...recipes, data]);  // Añadir la nueva receta a la lista
+            setRecipes([...recipes, response.data]);  // Añadir la nueva receta a la lista
             console.log("Receta creada con éxito");
         } catch (error) {
             console.error("Error al crear la receta:", error);

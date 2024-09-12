@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios";
 import RecipeForm from "../../components/RecipeForm/RecipeForm.jsx";
 
 const CreateRecipePage = () => {
@@ -18,27 +19,23 @@ const CreateRecipePage = () => {
     };
 
     try {
-      // Llamada a la API usando fetch
-      const response = await fetch("https://t2-24-2-backend.onrender.com/recipes", {
-        method: "POST",
+      // Llamada a la API usando Axios
+      const response = await axios.post("https://t2-24-2-backend.onrender.com/recipes", newRecipe, {
         headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer panconqueso", // Token en el encabezado
+          Authorization: "Bearer panconqueso",  // Token en el encabezado
         },
-        body: JSON.stringify(newRecipe),
       });
 
-      if (response.ok) {
+      if (response.status === 201 || response.status === 200) {
         setSuccessMessage("Recipe created successfully!");
         return true; // Indica éxito al RecipeForm
-      } else if (response.status === 422) {
-        const errorData = await response.json();
-        setErrorMessage(`Validation error: ${errorData.detail[0].msg}`);
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 422) {
+        setErrorMessage(`Validation error: ${error.response.data.detail[0].msg}`);
       } else {
         setErrorMessage("Failed to create recipe. Please try again.");
       }
-    } catch (error) {
-      setErrorMessage("An error occurred. Please try again.");
     }
 
     return false; // Indica error al RecipeForm
@@ -56,4 +53,3 @@ const CreateRecipePage = () => {
 };
 
 export default CreateRecipePage;
-
