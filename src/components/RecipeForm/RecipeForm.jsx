@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import './RecipeForm.css';
+import './RecipeForm.css';  // Asegúrate de importar el archivo CSS para los estilos
 
 const RecipeForm = ({ onSubmit }) => {
     const [formData, setFormData] = useState({
@@ -69,72 +69,80 @@ const RecipeForm = ({ onSubmit }) => {
     };
 
     return (
-        <div style={{ maxWidth: "600px", margin: "0 auto" }}>
+        <div className="recipe-form-container">
             <h2>Create a New Recipe</h2>
             <form onSubmit={handleSubmit}>
-                <label>Title</label>
+                <label htmlFor="title">Title</label>
                 <input
+                    id="title"
                     type="text"
                     name="title"
                     value={formData.title}
                     onChange={handleChange}
                 />
-                {errors.title && <p style={{ color: "red" }}>{errors.title}</p>}
+                {errors.title && <p className="error-text">{errors.title}</p>}
 
-                <label>Description</label>
+                <label htmlFor="description">Description</label>
                 <textarea
+                    id="description"
                     name="description"
                     value={formData.description}
                     onChange={handleChange}
                 />
-                {errors.description && <p style={{ color: "red" }}>{errors.description}</p>}
+                {errors.description && <p className="error-text">{errors.description}</p>}
 
-                <label>Ingredients (comma separated)</label>
+                <label htmlFor="ingredients">Ingredients (comma separated)</label>
                 <input
+                    id="ingredients"
                     type="text"
                     name="ingredients"
                     value={formData.ingredients}
                     onChange={handleChange}
                 />
-                {errors.ingredients && <p style={{ color: "red" }}>{errors.ingredients}</p>}
+                {errors.ingredients && <p className="error-text">{errors.ingredients}</p>}
 
-                <label>Tags (comma separated)</label>
+                <label htmlFor="tags">Tags (comma separated)</label>
                 <input
+                    id="tags"
                     type="text"
                     name="tags"
                     value={formData.tags}
                     onChange={handleChange}
                 />
-                {errors.tags && <p style={{ color: "red" }}>{errors.tags}</p>}
+                {errors.tags && <p className="error-text">{errors.tags}</p>}
 
-                <label>Image URL</label>
+                <label htmlFor="imageUrl">Image URL</label>
                 <input
+                    id="imageUrl"
                     type="text"
                     name="imageUrl"
                     value={formData.imageUrl}
                     onChange={handleChange}
                 />
-                {errors.imageUrl && <p style={{ color: "red" }}>{errors.imageUrl}</p>}
+                {errors.imageUrl && <p className="error-text">{errors.imageUrl}</p>}
 
-                <label>Preparation Time (in minutes)</label>
+                <label htmlFor="preparationTime">Preparation Time (in minutes)</label>
                 <input
+                    id="preparationTime"
                     type="text"
                     name="preparationTime"
                     value={formData.preparationTime}
                     onChange={handleChange}
                 />
-                {errors.preparationTime && <p style={{ color: "red" }}>{errors.preparationTime}</p>}
+                {errors.preparationTime && <p className="error-text">{errors.preparationTime}</p>}
 
-                <label>Steps (one per line)</label>
+                <label htmlFor="steps">Steps (one per line)</label>
                 <textarea
+                    id="steps"
                     name="steps"
                     value={formData.steps}
                     onChange={handleChange}
                 />
-                {errors.steps && <p style={{ color: "red" }}>{errors.steps}</p>}
+                {errors.steps && <p className="error-text">{errors.steps}</p>}
 
-                <label>Evaluation (1-5)</label>
+                <label htmlFor="evaluation">Evaluation (1-5)</label>
                 <input
+                    id="evaluation"
                     type="number"
                     name="evaluation"
                     min="1"
@@ -142,16 +150,17 @@ const RecipeForm = ({ onSubmit }) => {
                     value={formData.evaluation}
                     onChange={handleChange}
                 />
-                {errors.evaluation && <p style={{ color: "red" }}>{errors.evaluation}</p>}
+                {errors.evaluation && <p className="error-text">{errors.evaluation}</p>}
 
-                <label>Categories (comma separated)</label>
+                <label htmlFor="categories">Categories (comma separated)</label>
                 <input
+                    id="categories"
                     type="text"
                     name="categories"
                     value={formData.categories}
                     onChange={handleChange}
                 />
-                {errors.categories && <p style={{ color: "red" }}>{errors.categories}</p>}
+                {errors.categories && <p className="error-text">{errors.categories}</p>}
 
                 <button type="submit">Cook</button>
             </form>

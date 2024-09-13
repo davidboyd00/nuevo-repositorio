@@ -1,59 +1,50 @@
-/* RecipeForm.css */
-
-/* Centrar el formulario */
-div {
+.recipe-form-container {
     max-width: 600px;
-    margin: 20px auto;
+    margin: 0 auto;
+    background-color: #f7f7f7;
     padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
+    border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Estilos para los labels */
-label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-    margin-top: 15px;
+.recipe-form-container h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
 }
 
-/* Estilos para los campos de texto y textarea */
-input[type="text"],
-input[type="number"],
-textarea {
+.recipe-form-container label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #555;
+}
+
+.recipe-form-container input,
+.recipe-form-container textarea {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
 }
 
-/* Estilos para los errores */
-p {
-    color: red;
-    margin: 0;
-    font-size: 14px;
-}
-
-/* Estilos para el botón */
-button {
+.recipe-form-container button {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     background-color: #007bff;
     color: white;
     border: none;
-    border-radius: 4px;
-    font-size: 16px;
+    border-radius: 5px;
     cursor: pointer;
 }
 
-button:hover {
+.recipe-form-container button:hover {
     background-color: #0056b3;
 }
 
-button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
+.error-text {
+    color: red;
+    font-size: 14px;
 }
