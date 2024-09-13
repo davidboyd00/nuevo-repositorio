@@ -1,6 +1,6 @@
 // App.jsx
 import React from 'react';
-import './src/App.css';  // Importa el archivo CSS aquí
+import './App.css';  // Importa el archivo CSS aquí
 import Navbar from './components/Navbar/Navbar.jsx';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import RecipesPage from './pages/RecipesPage/RecipesPage.jsx';
