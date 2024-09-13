@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import './RecipeForm.css';
 
 const RecipeForm = ({ onSubmit }) => {
     const [formData, setFormData] = useState({
